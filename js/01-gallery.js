@@ -3,8 +3,11 @@ import { galleryItems } from './gallery-items.js';
 
 const galleryList = document.querySelector('.gallery');
 const markup = galleryItems
-.map(({preview, original, description }, index) => `<li data-id="${index}" class="js-card">
-<img src="${preview}" alt="${description}" class="js-target">
+.map(({preview, original, description }, index) =>
+ `<li data-source="${original}" class="js-card">
+ <a href="${original}">
+ <img src="${preview}" alt="${description}" class="js-target">
+ </a>
 </li>`)
 .join("");
 
@@ -14,18 +17,21 @@ galleryList.insertAdjacentHTML("beforeend", markup);
 galleryList.addEventListener("click", onClick);
 
 function onClick(evt){
+  evt.preventDefault();
   if (!evt.target.classList.contains("js-target")) {
     return;
   }
 
   const currentCard = evt.target.closest(".js-card");
-  const cardId = currentCard.dataset.id;
 
-  console.dir(cardId);
+
+  console.dir(currentCard.querySelector("a > img").alt);
 
   const instance = basicLightbox.create(`
-    <li class="js-card">
-    <img src="${galleryItems[cardId].original}" alt="${galleryItems[cardId].description}" class="js-target">
-    </li>`);
+    <img src="${currentCard.dataset.source}"
+      alt="${currentCard.querySelector("a > img").alt}"
+      class="js-target"
+    >`);
   instance.show()
+
 }
