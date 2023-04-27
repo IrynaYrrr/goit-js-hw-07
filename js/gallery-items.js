@@ -63,13 +63,3 @@ export const galleryItems = [
     description: 'Lighthouse Coast Sea',
   },
 ];
-
-
-const galleryList = document.querySelector('.gallery');
-const markup = galleryItems
-.map((item) => `<li class="list-item">
-<img src="${item.preview}" alt="${item.description}">
-</li>`)
-.join("");
-
-galleryList.insertAdjacentHTML("beforeend", markup);
