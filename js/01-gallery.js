@@ -4,11 +4,11 @@ import { galleryItems } from './gallery-items.js';
 const galleryList = document.querySelector('.gallery');
 const markup = galleryItems
 .map(({preview, original, description }) =>
- `<li data-source="${original}" class="js-card">
- <a href="${original}">
- <img src="${preview}" alt="${description}" class="js-target">
- </a>
-</li>`)
+ `<li class="gallery__item">
+    <a href="${original}" class="gallery__link">
+      <img src="${preview}" data-source="${original}" alt="${description}" class="gallery__image">
+    </a>
+  </li>`)
 .join("");
 
 galleryList.insertAdjacentHTML("beforeend", markup);
@@ -17,16 +17,16 @@ galleryList.addEventListener("click", onClick);
 
 function onClick(evt){
   evt.preventDefault();
-  if (!evt.target.classList.contains("js-target")) {
+  if (!evt.target.classList.contains("gallery__image")) {
     return;
   }
 
-  const currentCard = evt.target.closest(".js-card");
+  const currentCard = evt.target.closest(".gallery__item").querySelector("a > img");
 
   const instance = basicLightbox.create(`
     <img src="${currentCard.dataset.source}"
-      alt="${currentCard.querySelector("a > img").alt}"
-      class="js-target"
+      alt="${currentCard.alt}"
+      class="gallery__image"
     >`, {
       onShow: () => {
         document.addEventListener('keydown', onEscape);
